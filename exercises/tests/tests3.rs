@@ -7,7 +7,6 @@
 // Execute `rustlings hint tests3` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 pub fn is_even(num: i32) -> bool {
     num % 2 == 0
@@ -19,11 +18,17 @@ mod tests {
 
     #[test]
     fn is_true_when_even() {
-        assert!();
+        // 测试偶数场景
+        assert!(is_even(4));    // 正偶数
+        assert!(is_even(-2));   // 负偶数
+        assert!(is_even(0));    // 零是偶数
     }
 
     #[test]
     fn is_false_when_odd() {
-        assert!();
+        // 测试奇数场景
+        assert!(!is_even(7));   // 正奇数
+        assert!(!is_even(-3));  // 负奇数
+        assert!(!is_even(1));   // 最小正奇数
     }
 }

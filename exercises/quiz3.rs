@@ -16,18 +16,18 @@
 //
 // Execute `rustlings hint quiz3` or use the `hint` watch subcommand for a hint.
 
-// I AM NOT DONE
 
-pub struct ReportCard {
-    pub grade: f32,
+pub struct ReportCard<T: std::fmt::Display> {
+    pub grade: T,
     pub student_name: String,
     pub student_age: u8,
 }
 
-impl ReportCard {
+// 为所有实现 Display 的类型提供通用方法
+impl<T: std::fmt::Display> ReportCard<T> {
     pub fn print(&self) -> String {
         format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+                &self.student_name, &self.student_age, &self.grade)
     }
 }
 
@@ -37,6 +37,7 @@ mod tests {
 
     #[test]
     fn generate_numeric_report_card() {
+        // 数字成绩保持不变
         let report_card = ReportCard {
             grade: 2.1,
             student_name: "Tom Wriggle".to_string(),
@@ -50,9 +51,9 @@ mod tests {
 
     #[test]
     fn generate_alphabetic_report_card() {
-        // TODO: Make sure to change the grade here after you finish the exercise.
+        // 改为字母成绩
         let report_card = ReportCard {
-            grade: 2.1,
+            grade: "A+", // 直接使用字符串字面量
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
         };
@@ -60,5 +61,4 @@ mod tests {
             report_card.print(),
             "Gary Plotter (11) - achieved a grade of A+"
         );
-    }
-}
+    }}

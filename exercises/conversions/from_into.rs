@@ -24,8 +24,9 @@ impl Default for Person {
     }
 }
 
-// Your task is to complete this implementation in order for the line `let p =
-// Person::from("Mark,20")` to compile Please note that you'll need to parse the
+
+// Your task is to complete this implementation in order for the line `let p1 =
+// Person::from("Mark,20")` to compile. Please note that you'll need to parse the
 // age component into a `usize` with something like `"4".parse::<usize>()`. The
 // outcome of this needs to be handled appropriately.
 //
@@ -40,10 +41,28 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        if s.is_empty() {
+            Person::default()
+        } else {
+            let mut iter = s.split(',');
+            let name = match iter.next() {
+                Some("") | None => return Person::default(),
+                Some(x) => String::from(x)
+            };
+            let age = match iter.next() {
+                Some(x) => match x.parse::<usize>() {
+                    Ok(x) => x,
+                    Err(_) => return Person::default(),
+                },
+                None => return Person::default(),
+            };
+            match iter.next() {
+                Some(_) => return Person::default(),
+                None => return Person{name, age},
+            };
+        }
     }
 }
 
@@ -133,7 +152,7 @@ mod tests {
 
     #[test]
     fn test_trailing_comma_and_some_string() {
-        let p: Person = Person::from("Mike,32,man");
+        let p: Person = Person::from("Mike,32,dog");
         assert_eq!(p.name, "John");
         assert_eq!(p.age, 30);
     }

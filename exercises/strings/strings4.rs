@@ -7,7 +7,6 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
 
 fn string_slice(arg: &str) {
     println!("{}", arg);
@@ -17,14 +16,14 @@ fn string(arg: String) {
 }
 
 fn main() {
-    ???("blue");
-    ???("red".to_string());
-    ???(String::from("hi"));
-    ???("rust is fun!".to_owned());
-    ???("nice weather".into());
-    ???(format!("Interpolation {}", "Station"));
-    ???(&String::from("abc")[0..1]);
-    ???("  hello there ".trim());
-    ???("Happy Monday!".to_string().replace("Mon", "Tues"));
-    ???("mY sHiFt KeY iS sTiCkY".to_lowercase());
+    string_slice("blue");                         // "blue" 是字面量 → &str
+    string("red".to_string());                    // .to_string() → String
+    string(String::from("hi"));                   // String::from → String
+    string("rust is fun!".to_owned());            // .to_owned() → String
+    string("nice weather".into());                // .into() 推导为 String
+    string(format!("Interpolation {}", "Station")); // format! → String
+    string_slice(&String::from("abc")[0..1]);     // 字符串切片 → &str
+    string_slice("  hello there ".trim());        // .trim() 返回 &str
+    string("Happy Monday!".to_string().replace("Mon", "Tues")); // .replace() → String
+    string("mY sHiFt KeY iS sTiCkY".to_lowercase()); // .to_lowercase() → String
 }

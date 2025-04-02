@@ -22,17 +22,17 @@
 // Execute `rustlings hint errors5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::error;
 use std::fmt;
 use std::num::ParseIntError;
 
 // TODO: update the return type of `main()` to make this compile.
-fn main() -> Result<(), Box<dyn ???>> {
+// 修改返回类型为 Box<dyn error::Error> 以兼容两种错误类型
+fn main() -> Result<(), Box<dyn error::Error>> {
     let pretend_user_input = "42";
-    let x: i64 = pretend_user_input.parse()?;
-    println!("output={:?}", PositiveNonzeroInteger::new(x)?);
+    let x: i64 = pretend_user_input.parse()?; // 可能抛出 ParseIntError
+    println!("output={:?}", PositiveNonzeroInteger::new(x)?); // 可能抛出 CreationError
     Ok(())
 }
 
