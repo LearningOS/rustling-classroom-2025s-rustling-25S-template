@@ -1,5 +1,4 @@
-// tests7.rs
-//
+
 // When building packages, some dependencies can neither be imported in
 // `Cargo.toml` nor be directly linked; some preprocesses varies from code
 // generation to set-up package-specific configurations.
@@ -34,9 +33,7 @@
 // Execute `rustlings hint tests7` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-fn main() {}
 
 #[cfg(test)]
 mod tests {

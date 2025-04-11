@@ -2,7 +2,6 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -35,10 +34,55 @@ where
     pub fn is_empty(&self) -> bool {
         self.len() == 0
     }
+    pub fn peek(&self) -> Option<&T> {
+        if self.is_empty() {
+            None
+        } else {
+            Some(&self.items[1])
+        }
+    }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        // Add value to the end
+        self.items.push(value);
+        self.count += 1;
+        
+        // Heapify up
+        let mut idx = self.count;
+        while idx > 1 {
+            let parent_idx = self.parent_idx(idx);
+            if (self.comparator)(&self.items[idx], &self.items[parent_idx]) {
+                // Swap with parent if it satisfies the comparator condition
+                self.items.swap(idx, parent_idx);
+                idx = parent_idx;
+            } else {
+                break;
+            }
+        }
     }
+
+    fn smallest_child_idx(&self, idx: usize) -> usize {
+        let left_idx = self.left_child_idx(idx);
+        let right_idx = self.right_child_idx(idx);
+        
+        if right_idx <= self.count {
+            // Both children exist, return the one that satisfies the comparator
+            if (self.comparator)(&self.items[left_idx], &self.items[right_idx]) {
+                left_idx
+            } else {
+                right_idx
+            }
+        } else if left_idx <= self.count {
+            // Only left child exists
+            left_idx
+        } else {
+            // No children
+            idx
+        }
+    }
+    /*pub fn add(&mut self, value: T) {
+        //TODO
+    }*/
 
     fn parent_idx(&self, idx: usize) -> usize {
         idx / 2
@@ -56,10 +100,10 @@ where
         self.left_child_idx(idx) + 1
     }
 
-    fn smallest_child_idx(&self, idx: usize) -> usize {
+    //fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
-    }
+		//0
+   // }
 }
 
 impl<T> Heap<T>
@@ -82,11 +126,39 @@ where
     T: Default,
 {
     type Item = T;
-
     fn next(&mut self) -> Option<T> {
-        //TODO
-		None
+        if self.is_empty() {
+            return None;
+        }
+        
+        // Save the root value
+        let root = std::mem::replace(&mut self.items[1], T::default());
+        
+        // Move the last element to the root
+        if self.count > 1 {
+            self.items[1] = self.items.pop().unwrap();
+        } else {
+            self.items.pop();
+        }
+        self.count -= 1;
+        
+        // Heapify down
+        if !self.is_empty() {
+            let mut idx = 1;
+            while self.children_present(idx) {
+                let smallest_child = self.smallest_child_idx(idx);
+                if (self.comparator)(&self.items[smallest_child], &self.items[idx]) {
+                    self.items.swap(idx, smallest_child);
+                    idx = smallest_child;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        Some(root)
     }
+    
 }
 
 pub struct MinHeap;
