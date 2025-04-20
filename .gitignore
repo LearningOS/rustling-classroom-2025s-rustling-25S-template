@@ -1,3 +1,5 @@
+*.rs~
+*.rs.un~
 *.swp
 target/
 **/*.rs.bk
