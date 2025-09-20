@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+// 
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -69,14 +69,52 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(mut list_a:LinkedList<T>, mut list_b:LinkedList<T>) -> Self
+    where T: PartialOrd
 	{
 		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+		let mut result = Self::new();
+        let mut tail = Option::<NonNull<Node<T>>>::None;
+        let mut a_node = list_a.start.take();
+        let mut b_node = list_b.start.take();
+        while a_node.is_some() && b_node.is_some() {
+            let next_node : Option<NonNull<Node<T>>>;
+            let a_val = unsafe { &(*a_node.unwrap().as_ptr()).val };
+            let b_val = unsafe { &(*b_node.unwrap().as_ptr()).val };
+            if a_val < b_val {
+                next_node = a_node;
+                a_node = unsafe { (*a_node.unwrap().as_ptr()).next };
+            } else {
+                next_node = b_node;
+                b_node = unsafe { (*b_node.unwrap().as_ptr()).next };
+            }
+            if let None = tail {
+                result.start = next_node;
+            } else {
+                unsafe { (*tail.unwrap().as_ptr()).next = next_node };
+            }
+            tail = next_node;
         }
+        if a_node.is_some() {
+            unsafe { 
+                (*tail.unwrap().as_ptr()).next = a_node;
+                while (*a_node.unwrap().as_ptr()).next.is_some() {
+                    a_node = (*a_node.unwrap().as_ptr()).next;
+                }
+                tail = a_node;
+            };
+        } else if b_node.is_some() {
+            unsafe { 
+                (*tail.unwrap().as_ptr()).next = b_node;
+                while (*b_node.unwrap().as_ptr()).next.is_some() {
+                    b_node = (*b_node.unwrap().as_ptr()).next;
+                }
+                tail = b_node;
+            };
+        }
+        result.end = tail;
+        result.length = list_a.length + list_b.length;
+        result
 	}
 }
 
